@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_decathlon" default="compile.module.decathlon">
+  <dirname property="module.decathlon.basedir" file="${ant.file.module_decathlon}"/>
+  
+  <property name="module.jdk.home.decathlon" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.decathlon" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.decathlon" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.decathlon" value="-encoding windows-1252 -source 8 ${compiler.args}"/>
+  
+  <property name="decathlon.output.dir" value="${module.decathlon.basedir}/out/production/Decathlon"/>
+  <property name="decathlon.testoutput.dir" value="${module.decathlon.basedir}/out/test/Decathlon"/>
+  
+  <path id="decathlon.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="decathlon.module.production.classpath">
+    <path refid="${module.jdk.classpath.decathlon}"/>
+  </path>
+  
+  <path id="decathlon.runtime.production.module.classpath">
+    <pathelement location="${decathlon.output.dir}"/>
+  </path>
+  
+  <path id="decathlon.module.classpath">
+    <path refid="${module.jdk.classpath.decathlon}"/>
+    <pathelement location="${decathlon.output.dir}"/>
+  </path>
+  
+  <path id="decathlon.runtime.module.classpath">
+    <pathelement location="${decathlon.testoutput.dir}"/>
+    <pathelement location="${decathlon.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.decathlon">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.decathlon">
+    <patternset refid="excluded.from.module.decathlon"/>
+  </patternset>
+  
+  <path id="decathlon.module.sourcepath">
+    <dirset dir="${module.decathlon.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.decathlon" depends="compile.module.decathlon.production,compile.module.decathlon.tests" description="Compile module Decathlon"/>
+  
+  <target name="compile.module.decathlon.production" depends="register.custom.compilers" description="Compile module Decathlon; production classes">
+    <mkdir dir="${decathlon.output.dir}"/>
+    <javac2 destdir="${decathlon.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.decathlon}/javac">
+      <compilerarg line="${compiler.args.decathlon}"/>
+      <bootclasspath refid="decathlon.module.bootclasspath"/>
+      <classpath refid="decathlon.module.production.classpath"/>
+      <src refid="decathlon.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.decathlon"/>
+    </javac2>
+    
+    <copy todir="${decathlon.output.dir}">
+      <fileset dir="${module.decathlon.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.decathlon.tests" depends="register.custom.compilers,compile.module.decathlon.production" description="compile module Decathlon; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.decathlon" description="cleanup module">
+    <delete dir="${decathlon.output.dir}"/>
+    <delete dir="${decathlon.testoutput.dir}"/>
+  </target>
+</project>
