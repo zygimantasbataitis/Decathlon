@@ -4,22 +4,18 @@ package com.company;
  * Created by zygis on 25/09/2015.
  */
 public final class Consts {
-
-    public static final int ATHLETE_NAME_IDX = 0;
+	
+	private Consts(){
+		
+	};
+	
+	public static final int ATHLETE_NAME_IDX = 0;
 
     public static final String COMMA_DELIMITER = ";";
 
     public static final String DOT_DELIMITER = ".";
 
     public static final String RESULTS_XSL = "/com/company/resources/Results.xsl";
-
-    public static final String START_XML_OUTPUT = "Starting XML output";
-
-    public static final String END_XML_OUTPUT = "End XML output";
-
-    public static final String START_HTML_OUTPUT = "Starting HTML output";
-
-    public static final String END_HTML_OUTPUT = "End HTML output";
 
     public static final String ALL_TASKS_EXECUTED = "All task executed";
 

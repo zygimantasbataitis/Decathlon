@@ -17,17 +17,9 @@ import com.company.model.EventType;
 /**
  * Created by zygis on 25/09/2015.
  */
-public class CsvImporter {
+public final class CsvImporter {
 
-    private static CsvImporter dataImportCsv;
-    private CsvImporter() {}
-
-    public static CsvImporter getImportCsv() {
-        if(dataImportCsv == null) dataImportCsv = new CsvImporter();
-        return dataImportCsv;
-    }
-
-    public List<Athlete> readCsvFile(InputStream fileStream) {
+    public static List<Athlete> readCsvFile(InputStream fileStream) {
 
         BufferedReader fileReader = null;
         List<Athlete> athletes = new ArrayList<Athlete>();

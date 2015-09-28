@@ -32,7 +32,7 @@ public class Decathlon {
         try {
             if (args[i] != null && args[i].compareToIgnoreCase("-csv") == 0 && Utils.existsFile(args[i+1])) {
                 i++;
-                athletes = CsvImporter.getImportCsv().readCsvFile(new FileInputStream (args[i]));
+                athletes = CsvImporter.readCsvFile(new FileInputStream (args[i]));
             } else {
             	Utils.logInfo(Consts.NO_INPUT_DEFINITION);
                 return false;
@@ -42,7 +42,7 @@ public class Decathlon {
 
             orderResults();
             try {
-                XmlExporter.getExportXml().exportAsXML(Utils.newFileOutputStream(args[i]), athletes);
+                XmlExporter.exportAsXML(Utils.newFileOutputStream(args[i]), athletes);
             } catch (TransformerException e) {
             	Utils.logInfo(Consts.XML_NOT_EXPORTED);
                 return false;
@@ -52,7 +52,7 @@ public class Decathlon {
             if (args[i] != null && args[i].compareToIgnoreCase("-html") == 0) {
                 try {
                     i++;
-                    HtmlExporter.getExportHtml().exportAsHTML(Utils.newFileOutputStream(args[i]), athletes);
+                    HtmlExporter.exportAsHTML(Utils.newFileOutputStream(args[i]), athletes);
                 } catch (TransformerException e) {
                 	Utils.logInfo(Consts.HTML_NOT_EXPORTED);
                     return false;

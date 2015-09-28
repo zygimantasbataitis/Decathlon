@@ -25,19 +25,9 @@ import com.company.model.Athletes;
 /**
  * Created by zygis on 27/09/2015.
  */
-public class HtmlExporter {
+public final class HtmlExporter {
 
-    private static HtmlExporter dataExportHtml;
-    private HtmlExporter() {}
-
-    public static HtmlExporter getExportHtml() {
-        if(dataExportHtml == null) dataExportHtml = new HtmlExporter();
-        return dataExportHtml;
-    }
-
-    public void exportAsHTML(PrintStream outputStream, List<Athlete> athletes) throws JAXBException, FileNotFoundException, TransformerException {
-    	Utils.logInfo(Consts.START_HTML_OUTPUT);
-
+    public static void exportAsHTML(PrintStream outputStream, List<Athlete> athletes) throws JAXBException, FileNotFoundException, TransformerException {
         File f = new File(Consts.TEMP_XML);
 
         FileOutputStream tmpFile = new FileOutputStream(f);
@@ -62,8 +52,6 @@ public class HtmlExporter {
         fileStream.close();
         if (f.exists())
             f.delete();
-
-        Utils.logInfo(Consts.END_HTML_OUTPUT);
     }
 
 }

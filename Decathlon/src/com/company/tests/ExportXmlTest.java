@@ -45,7 +45,7 @@ public class ExportXmlTest {
     @Test
     public void exportAsXMLTest() throws ParserConfigurationException, IOException, SAXException, JAXBException, TransformerException {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        XmlExporter.getExportXml().exportAsXML(new PrintStream(outStream), results);
+        XmlExporter.exportAsXML(new PrintStream(outStream), results);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(outStream.toByteArray());
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
