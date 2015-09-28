@@ -25,18 +25,18 @@ import com.company.model.Athletes;
 /**
  * Created by zygis on 27/09/2015.
  */
-public class ExportHtml extends AbstractLogger {
+public class HtmlExporter {
 
-    private static ExportHtml dataExportHtml;
-    private ExportHtml() {}
+    private static HtmlExporter dataExportHtml;
+    private HtmlExporter() {}
 
-    public static ExportHtml getExportHtml() {
-        if(dataExportHtml == null) dataExportHtml = new ExportHtml();
+    public static HtmlExporter getExportHtml() {
+        if(dataExportHtml == null) dataExportHtml = new HtmlExporter();
         return dataExportHtml;
     }
 
     public void exportAsHTML(PrintStream outputStream, List<Athlete> athletes) throws JAXBException, FileNotFoundException, TransformerException {
-        logInfo(Consts.START_HTML_OUTPUT);
+    	Utils.logInfo(Consts.START_HTML_OUTPUT);
 
         File f = new File(Consts.TEMP_XML);
 
@@ -52,7 +52,7 @@ public class ExportHtml extends AbstractLogger {
 
         jaxbMarshaller.marshal( new Athletes(athletes), out );
 
-        InputStream xsl = ExportXml.class.getResourceAsStream(Consts.RESULTS_XSL);
+        InputStream xsl = XmlExporter.class.getResourceAsStream(Consts.RESULTS_XSL);
 
         BufferedWriter outHTML = new BufferedWriter(new OutputStreamWriter(outputStream));
 
@@ -63,7 +63,7 @@ public class ExportHtml extends AbstractLogger {
         if (f.exists())
             f.delete();
 
-        logInfo(Consts.END_HTML_OUTPUT);
+        Utils.logInfo(Consts.END_HTML_OUTPUT);
     }
 
 }

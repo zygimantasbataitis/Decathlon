@@ -3,7 +3,7 @@ package com.company;
 /**
  * Created by zygis on 25/09/2015.
  */
-public class Consts {
+public final class Consts {
 
     public static final int ATHLETE_NAME_IDX = 0;
 

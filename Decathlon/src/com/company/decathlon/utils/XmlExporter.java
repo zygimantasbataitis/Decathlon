@@ -19,18 +19,18 @@ import static com.company.Consts.START_XML_OUTPUT;
 /**
  * Created by zygis on 26/09/2015.
  */
-public class ExportXml extends AbstractLogger{
+public class XmlExporter {
 
-    private static ExportXml dataExportXml;
-    private ExportXml() {}
+    private static XmlExporter dataExportXml;
+    private XmlExporter() {}
 
-    public static ExportXml getExportXml() {
-        if(dataExportXml == null) dataExportXml = new ExportXml();
+    public static XmlExporter getExportXml() {
+        if(dataExportXml == null) dataExportXml = new XmlExporter();
         return dataExportXml;
     }
 
     public void exportAsXML(PrintStream outputStream, List<Athlete> athletes) throws JAXBException, FileNotFoundException, TransformerException {
-        logInfo(START_XML_OUTPUT);
+        Utils.logInfo(START_XML_OUTPUT);
 
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(outputStream));
 
@@ -41,7 +41,7 @@ public class ExportXml extends AbstractLogger{
 
         jaxbMarshaller.marshal( new Athletes(athletes), out );
 
-        logInfo(END_XML_OUTPUT);
+        Utils.logInfo(END_XML_OUTPUT);
     }
 
 }

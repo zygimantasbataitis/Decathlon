@@ -1,17 +1,19 @@
 package com.company.decathlon.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
 import static com.company.Consts.DOT_DELIMITER;
-import static com.company.Consts.FILE_NOT_FOUND;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.logging.Logger;
+
+import com.company.Consts;
 
 /**
  * Created by zygis on 27/09/2015.
  */
-public class Utils {
+public final class Utils {
 
     public static double minToSec(String min) throws NumberFormatException {
         if (min.contains(DOT_DELIMITER)) {
@@ -22,17 +24,33 @@ public class Utils {
         }
     }
 
-    public static PrintStream newFileOutputStream(String file) {
-        try {
-            return new PrintStream(new FileOutputStream(file));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(FILE_NOT_FOUND + "(" + file + "): " + e.getMessage());
-        }
-    }
+	public static PrintStream newFileOutputStream(String file)
+			throws IOException {
+		PrintStream printStream = null;
+		try {
+			printStream = new PrintStream(new FileOutputStream(file));
+			return printStream;
+		} catch (Exception e) {
+			logInfo(Consts.FILE_NOT_FOUND);
+			return printStream;
+		}
+	}
 
     public static boolean existsFile(String fileName) {
         File f = new File(fileName);
         return (f != null && f.exists() && !f.isDirectory() ? true : false);
     }
 
+    public static Logger logger() {
+        return Logger.getLogger("Utils");
+    }
+
+    public static void logInfo(String message) {
+        logger().info(message);
+    } 
+    
+    public static void logWarning(String message) {
+        logger().warning(message);
+    }     
+    
 }

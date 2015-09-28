@@ -1,28 +1,25 @@
 package com.company;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
 
-import com.company.decathlon.utils.ExportHtml;
-import com.company.decathlon.utils.ExportXml;
-import com.company.decathlon.utils.ImportCsv;
+import com.company.decathlon.utils.CsvImporter;
+import com.company.decathlon.utils.HtmlExporter;
 import com.company.decathlon.utils.Utils;
+import com.company.decathlon.utils.XmlExporter;
 import com.company.model.Athlete;
 
 public class Decathlon {
 
-    static Logger log = Logger.getLogger(Decathlon.class.getName());
-
     static List<Athlete> athletes = new ArrayList<>();
 
-    public static void main(String[] args) throws JAXBException, FileNotFoundException {
+    public static void main(String[] args) throws JAXBException, IOException {
 
         if (!parseCommandLine(args)) {
             System.out.println(Consts.APPLICATION_USAGE);
@@ -30,14 +27,14 @@ public class Decathlon {
 
     }
 
-    static boolean parseCommandLine (String[] args) throws JAXBException, FileNotFoundException {
+    static boolean parseCommandLine (String[] args) throws JAXBException, IOException {
         int i = 0;
         try {
             if (args[i] != null && args[i].compareToIgnoreCase("-csv") == 0 && Utils.existsFile(args[i+1])) {
                 i++;
-                athletes = ImportCsv.getImportCsv().readCsvFile(new FileInputStream (args[i]));
+                athletes = CsvImporter.getImportCsv().readCsvFile(new FileInputStream (args[i]));
             } else {
-                log.info(Consts.NO_INPUT_DEFINITION);
+            	Utils.logInfo(Consts.NO_INPUT_DEFINITION);
                 return false;
             }
 
@@ -45,9 +42,9 @@ public class Decathlon {
 
             orderResults();
             try {
-                ExportXml.getExportXml().exportAsXML(Utils.newFileOutputStream(args[i]), athletes);
+                XmlExporter.getExportXml().exportAsXML(Utils.newFileOutputStream(args[i]), athletes);
             } catch (TransformerException e) {
-                log.info(Consts.XML_NOT_EXPORTED);
+            	Utils.logInfo(Consts.XML_NOT_EXPORTED);
                 return false;
             }
 
@@ -55,17 +52,17 @@ public class Decathlon {
             if (args[i] != null && args[i].compareToIgnoreCase("-html") == 0) {
                 try {
                     i++;
-                    ExportHtml.getExportHtml().exportAsHTML(Utils.newFileOutputStream(args[i]), athletes);
+                    HtmlExporter.getExportHtml().exportAsHTML(Utils.newFileOutputStream(args[i]), athletes);
                 } catch (TransformerException e) {
-                    log.info(Consts.HTML_NOT_EXPORTED);
+                	Utils.logInfo(Consts.HTML_NOT_EXPORTED);
                     return false;
                 }
             }
 
-            log.info(Consts.ALL_TASKS_EXECUTED);
+            Utils.logInfo(Consts.ALL_TASKS_EXECUTED);
             return true;
         } catch (ArrayIndexOutOfBoundsException e) {
-            log.warning(Consts.WRONG_FILES_DEFINITION);
+            Utils.logWarning(Consts.WRONG_FILES_DEFINITION);
             return false;
         }
     }

@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.company.decathlon.utils.ExportXml;
+import com.company.decathlon.utils.XmlExporter;
 import com.company.decathlon.utils.Utils;
 import com.company.model.Athlete;
 
@@ -45,7 +45,7 @@ public class ExportXmlTest {
     @Test
     public void exportAsXMLTest() throws ParserConfigurationException, IOException, SAXException, JAXBException, TransformerException {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        ExportXml.getExportXml().exportAsXML(new PrintStream(outStream), results);
+        XmlExporter.getExportXml().exportAsXML(new PrintStream(outStream), results);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(outStream.toByteArray());
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);

@@ -1,7 +1,7 @@
 package com.company.tests;
 
 import com.company.decathlon.utils.Utils;
-import com.company.decathlon.utils.ImportCsv;
+import com.company.decathlon.utils.CsvImporter;
 import com.company.model.Athlete;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +72,7 @@ public class ImportCsvTest {
 
     @Test
     public void athletesDataFromCSVFile() {
-        List<Athlete> importedResults = ImportCsv.getImportCsv().readCsvFile(new ByteArrayInputStream(csvTestInput.getBytes()));
+        List<Athlete> importedResults = CsvImporter.getImportCsv().readCsvFile(new ByteArrayInputStream(csvTestInput.getBytes()));
         assertEquals(results[0].getAsCSVString(), importedResults.get(0).getAsCSVString());
         assertEquals(results[1].getAsCSVString(), importedResults.get(1).getAsCSVString());
         assertEquals(results[2].getAsCSVString(), importedResults.get(2).getAsCSVString());

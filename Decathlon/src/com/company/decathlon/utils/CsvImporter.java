@@ -17,13 +17,13 @@ import com.company.model.EventType;
 /**
  * Created by zygis on 25/09/2015.
  */
-public class ImportCsv extends AbstractLogger {
+public class CsvImporter {
 
-    private static ImportCsv dataImportCsv;
-    private ImportCsv() {}
+    private static CsvImporter dataImportCsv;
+    private CsvImporter() {}
 
-    public static ImportCsv getImportCsv() {
-        if(dataImportCsv == null) dataImportCsv = new ImportCsv();
+    public static CsvImporter getImportCsv() {
+        if(dataImportCsv == null) dataImportCsv = new CsvImporter();
         return dataImportCsv;
     }
 
@@ -56,7 +56,7 @@ public class ImportCsv extends AbstractLogger {
             try {
                 fileReader.close();
             } catch (IOException e) {
-                logInfo(ERROR_CLOSING_READER);
+                Utils.logInfo(ERROR_CLOSING_READER);
                 e.printStackTrace();
             }
         }
