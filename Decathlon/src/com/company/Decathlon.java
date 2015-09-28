@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,37 +28,19 @@ public class Decathlon {
 
     }
 
-    static boolean parseCommandLine (String[] args) throws JAXBException, IOException {
+    private static boolean parseCommandLine (String[] args) throws JAXBException, IOException {
         int i = 0;
         try {
-            if (args[i] != null && args[i].compareToIgnoreCase("-csv") == 0 && Utils.existsFile(args[i+1])) {
-                i++;
-                athletes = CsvImporter.readCsvFile(new FileInputStream (args[i]));
-            } else {
+        	if (!readFromCsv(args[i], args[++i])) {
             	Utils.logInfo(Consts.NO_INPUT_DEFINITION);
                 return false;
-            }
-
-            i++;
-
+        	}
+        	
             orderResults();
-            try {
-                XmlExporter.exportAsXML(Utils.newFileOutputStream(args[i]), athletes);
-            } catch (TransformerException e) {
-            	Utils.logInfo(Consts.XML_NOT_EXPORTED);
-                return false;
-            }
+            exportXML(args[++i]);
 
             i++;
-            if (args[i] != null && args[i].compareToIgnoreCase("-html") == 0) {
-                try {
-                    i++;
-                    HtmlExporter.exportAsHTML(Utils.newFileOutputStream(args[i]), athletes);
-                } catch (TransformerException e) {
-                	Utils.logInfo(Consts.HTML_NOT_EXPORTED);
-                    return false;
-                }
-            }
+            exportHTML(args[i], args[i+1]);
 
             Utils.logInfo(Consts.ALL_TASKS_EXECUTED);
             return true;
@@ -66,7 +49,34 @@ public class Decathlon {
             return false;
         }
     }
-
+    
+    private static boolean readFromCsv(String inputMethod, String inputParameter) throws FileNotFoundException {
+        if (inputMethod != null && inputMethod.compareToIgnoreCase("-csv") == 0 && Utils.existsFile(inputParameter)) {
+            athletes = CsvImporter.readCsvFile(new FileInputStream (inputParameter));
+            return true;
+        } else {
+        	return false;
+        }
+    }
+    
+    private static void exportXML(String inputParameter) throws FileNotFoundException, JAXBException, IOException {
+        try {
+            XmlExporter.exportAsXML(Utils.newFileOutputStream(inputParameter), athletes);
+        } catch (TransformerException e) {
+        	Utils.logInfo(Consts.XML_NOT_EXPORTED);
+        }  	
+    }
+    
+    private static void exportHTML(String inputMethod, String inputParameter) throws FileNotFoundException, JAXBException, IOException {
+        if (inputMethod != null && inputMethod.compareToIgnoreCase("-html") == 0) {
+            try {
+                HtmlExporter.exportAsHTML(Utils.newFileOutputStream(inputParameter), athletes);
+            } catch (TransformerException e) {
+            	Utils.logInfo(Consts.HTML_NOT_EXPORTED);
+            }
+        }    
+    }
+    
     static void orderResults() {
         Integer previousPoint = 0;
         Integer previousPlace = 0;
